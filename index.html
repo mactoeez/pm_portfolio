@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sukrit Srivastava — Technical Product Manager</title>
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+
+  <style>
+    :root {
+      --navy:    #0A0F1E;
+      --surface: #111827;
+      --card:    #1A2640;
+      --border:  #1E3A5F;
+      --blue:    #00C6FF;
+      --violet:  #7B61FF;
+      --text:    #E8F4FD;
+      --muted:   #7A9BB5;
+      --radius:  12px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--navy);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      line-height: 1.7;
+      margin: 0;
+    }
+
+    /* ── NAV ── */
+    .tpm-nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      background: rgba(10,15,30,0.92);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .tpm-nav .brand {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--text);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+    .tpm-nav .brand span { color: var(--blue); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; margin: 0; padding: 0; }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--blue); }
+
+    /* ── HERO ── */
+    #home {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 100px 2rem 60px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,198,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,198,255,0.04) 1px, transparent 1px);
+      background-size: 44px 44px;
+      pointer-events: none;
+    }
+    .hero-glow {
+      position: absolute;
+      width: 520px; height: 520px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,198,255,0.12) 0%, transparent 70%);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+    .hero-content { position: relative; z-index: 1; max-width: 760px; }
+
+    .terminal-bar {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px 8px 0 0;
+      padding: 8px 14px;
+      font-size: 0.75rem;
+      color: var(--muted);
+      font-family: 'JetBrains Mono', monospace;
+      margin-bottom: 0;
+    }
+    .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .dot-r { background: #FF5F57; }
+    .dot-y { background: #FEBC2E; }
+    .dot-g { background: #28C840; }
+
+    .terminal-body {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-top: none;
+      border-radius: 0 0 8px 8px;
+      padding: 20px 22px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      margin-bottom: 2.5rem;
+    }
+    .terminal-body .prompt { color: var(--blue); }
+    .terminal-body .cmd { color: var(--text); }
+    .terminal-body .out { color: var(--muted); margin-top: 4px; }
+    .terminal-body .out span { color: var(--violet); }
+    .cursor {
+      display: inline-block;
+      width: 9px; height: 1.1em;
+      background: var(--blue);
+      vertical-align: text-bottom;
+      animation: blink 1s step-end infinite;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    .hero-headline {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2.4rem, 6vw, 4.2rem);
+      font-weight: 700;
+      line-height: 1.12;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.2rem;
+    }
+    .hero-headline .hl { color: var(--blue); }
+
+    .hero-sub {
+      color: var(--muted);
+      font-size: 1.05rem;
+      max-width: 540px;
+      margin-bottom: 2.2rem;
+    }
+
+    .pill-row { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 2.2rem; }
+    .pill {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 5px 14px;
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .hero-cta { display: flex; gap: 14px; flex-wrap: wrap; }
+    .btn-primary-tpm {
+      background: linear-gradient(135deg, var(--blue), var(--violet));
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 26px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      font-family: 'Space Grotesk', sans-serif;
+      cursor: pointer;
+      text-decoration: none;
+      transition: opacity 0.2s, transform 0.15s;
+      display: inline-flex; align-items: center; gap: 7px;
+    }
+    .btn-primary-tpm:hover { opacity: 0.88; transform: translateY(-1px); color: #fff; }
+
+    .btn-outline-tpm {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 26px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      font-family: 'Space Grotesk', sans-serif;
+      cursor: pointer;
+      text-decoration: none;
+      transition: border-color 0.2s, color 0.2s;
+      display: inline-flex; align-items: center; gap: 7px;
+    }
+    .btn-outline-tpm:hover { border-color: var(--blue); color: var(--blue); }
+
+    /* ── SECTION COMMON ── */
+    section { padding: 90px 0; }
+    .section-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--blue);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 10px;
+    }
+    .section-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(1.7rem, 4vw, 2.6rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.5rem;
+    }
+    .section-divider {
+      width: 48px; height: 3px;
+      background: linear-gradient(90deg, var(--blue), var(--violet));
+      border-radius: 4px;
+      margin-bottom: 2.5rem;
+    }
+
+    /* ── ABOUT ── */
+    #about { background: var(--surface); }
+    .about-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      height: 100%;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .about-card:hover { border-color: var(--blue); transform: translateY(-3px); }
+    .about-card h4 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--blue);
+      margin-bottom: 12px;
+    }
+    .about-card p { color: var(--muted); font-size: 0.9rem; margin: 0; }
+
+    .skill-tag {
+      display: inline-block;
+      background: rgba(0,198,255,0.08);
+      border: 1px solid rgba(0,198,255,0.2);
+      color: var(--blue);
+      border-radius: 6px;
+      padding: 3px 10px;
+      font-size: 0.78rem;
+      font-family: 'JetBrains Mono', monospace;
+      margin: 4px 3px;
+    }
+
+    /* ── EXPERIENCE (TIMELINE) ── */
+    #experience { background: var(--navy); }
+    .timeline { position: relative; padding-left: 30px; }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 8px; top: 0; bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--blue), var(--violet), transparent);
+    }
+    .tl-item { position: relative; margin-bottom: 44px; }
+    .tl-dot {
+      position: absolute;
+      left: -26px; top: 6px;
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      background: var(--blue);
+      border: 3px solid var(--navy);
+      box-shadow: 0 0 0 2px var(--blue);
+    }
+    .tl-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 26px 28px;
+      transition: border-color 0.2s;
+    }
+    .tl-card:hover { border-color: var(--violet); }
+    .tl-role {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+    .tl-company {
+      color: var(--blue);
+      font-size: 0.88rem;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+    .tl-meta { color: var(--muted); font-size: 0.78rem; font-family: 'JetBrains Mono', monospace; margin-bottom: 14px; }
+    .tl-card ul { padding-left: 18px; margin: 0; color: var(--muted); font-size: 0.88rem; }
+    .tl-card ul li { margin-bottom: 5px; }
+
+    .tl-tools { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+    .tool-badge {
+      background: rgba(123,97,255,0.1);
+      border: 1px solid rgba(123,97,255,0.25);
+      color: var(--violet);
+      border-radius: 6px;
+      padding: 2px 9px;
+      font-size: 0.75rem;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* ── CERTS ── */
+    #certifications { background: var(--surface); }
+    .cert-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .cert-card:hover { border-color: var(--blue); transform: translateY(-3px); }
+    .cert-issuer {
+      font-size: 0.75rem;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--blue);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 6px;
+    }
+    .cert-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text);
+      flex: 1;
+      margin-bottom: 16px;
+    }
+    .cert-links { display: flex; gap: 10px; }
+    .cert-link {
+      color: var(--muted);
+      font-size: 0.8rem;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 4px 12px;
+      transition: color 0.2s, border-color 0.2s;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .cert-link:hover { color: var(--blue); border-color: var(--blue); }
+
+    /* ── EDUCATION ── */
+    #education { background: var(--navy); }
+    .edu-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--blue);
+      border-radius: var(--radius);
+      padding: 28px;
+    }
+    .edu-degree {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .edu-inst { color: var(--blue); font-weight: 500; margin-bottom: 6px; }
+    .edu-meta { color: var(--muted); font-size: 0.85rem; font-family: 'JetBrains Mono', monospace; }
+
+    /* ── CONTACT ── */
+    #contact { background: var(--surface); }
+    .contact-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 36px;
+      text-align: center;
+    }
+    .contact-tagline {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .contact-items { display: flex; justify-content: center; flex-wrap: wrap; gap: 16px; margin-top: 28px; }
+    .contact-btn {
+      display: inline-flex; align-items: center; gap: 9px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 22px;
+      color: var(--text);
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 500;
+      transition: border-color 0.2s, color 0.2s;
+      background: var(--surface);
+    }
+    .contact-btn:hover { border-color: var(--blue); color: var(--blue); }
+    .contact-btn i { font-size: 1.1rem; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--navy);
+      border-top: 1px solid var(--border);
+      padding: 24px 2rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.8rem;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* ── MOBILE NAV ── */
+    .hamburger { display: none; background: none; border: 1px solid var(--border); border-radius: 6px; padding: 6px 10px; color: var(--muted); cursor: pointer; }
+    @media (max-width: 768px) {
+      .hamburger { display: block; }
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        gap: 0;
+        position: absolute;
+        top: 60px; left: 0; right: 0;
+        background: var(--surface);
+        border-bottom: 1px solid var(--border);
+        padding: 16px 2rem;
+      }
+      .nav-links.open { display: flex; }
+      .nav-links a { padding: 8px 0; }
+      .hero-headline { font-size: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="tpm-nav">
+  <a href="#home" class="brand">Sukrit<span>.</span></a>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <i class="bi bi-list"></i>
+  </button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#certifications">Certifications</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="home">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-content text-start">
+
+    <!-- Terminal block -->
+    <div class="terminal-bar">
+      <div class="dot dot-r"></div>
+      <div class="dot dot-y"></div>
+      <div class="dot dot-g"></div>
+      <span style="margin-left:8px">bash — ~/sukrit</span>
+    </div>
+    <div class="terminal-body">
+      <div><span class="prompt">❯</span> <span class="cmd">whoami</span></div>
+      <div class="out"><span>Sukrit Srivastava</span> — Technical Product Manager · System Architecture</div>
+      <div style="margin-top:10px"><span class="prompt">❯</span> <span class="cmd">cat mission.txt</span></div>
+      <div class="out">Shipping scalable SaaS platforms at the intersection of architecture, AI, and product strategy.</div>
+      <div style="margin-top:10px"><span class="prompt">❯</span> <span class="cmd">status</span><span class="cursor"></span></div>
+    </div>
+
+    <h1 class="hero-headline">
+      Building <span class="hl">products</span><br>
+      that ship — and <span class="hl">scale.</span>
+    </h1>
+    <p class="hero-sub">
+      A product-minded technologist who codes before wireframing, questions before solutioning, and ships before perfecting.
+    </p>
+
+    <div class="pill-row">
+      <span class="pill">System Architecture</span>
+      <span class="pill">Agentic AI · LLMs</span>
+      <span class="pill">EU/US SaaS</span>
+      <span class="pill">HLD / LLD · API Contracts</span>
+      <span class="pill">AWS · Django · React</span>
+    </div>
+
+    <div class="hero-cta">
+      <a href="#experience" class="btn-primary-tpm"><i class="bi bi-arrow-down-right-circle"></i> View My Work</a>
+      <a href="mailto:unite.sukrit@gmail.com" class="btn-outline-tpm"><i class="bi bi-envelope"></i> Get in Touch</a>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="section-label"># about</div>
+    <div class="section-title">Who I Am</div>
+    <div class="section-divider"></div>
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-4">
+        <div class="about-card">
+          <h4><i class="bi bi-person-gear me-2"></i>The Role I Play</h4>
+          <p>I'm a Tech-Functional PM who authors HLD/LLD documentation and API contracts in the morning and reviews sprint velocity with engineering in the afternoon. I've owned end-to-end product delivery for EU/US SaaS platforms, from roadmap to release — across healthcare, real estate, AI, and government research verticals.</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="about-card">
+          <h4><i class="bi bi-cpu me-2"></i>Technical Foundation</h4>
+          <p>B.Tech in IT from Manipal University. I build with Python, Django, React.js, and REST/GraphQL APIs. I've architected microservices, written SQL schema designs, deployed on AWS (EC2, S3, Lambda, RDS, DynamoDB, API Gateway), and shipped agentic AI workflows using LLMs and CrewAI — so I know exactly what's hard before it hits the roadmap.</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="about-card">
+          <h4><i class="bi bi-graph-up-arrow me-2"></i>How I Work</h4>
+          <p>Data-driven and compliance-aware by default. I implement A/B testing, automated QA, WCAG/GIGW validation, and SOC2-aligned integration standards into every release cycle — not as afterthoughts, but as acceptance criteria. I keep stakeholders aligned across engineering, design, QA, legal, and marketing simultaneously.</p>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="about-card">
+          <h4><i class="bi bi-tools me-2"></i>Tech Stack & Tools</h4>
+          <div>
+            <span class="skill-tag">Jira</span><span class="skill-tag">Notion</span>
+            <span class="skill-tag">Figma</span><span class="skill-tag">Balsamiq</span>
+            <span class="skill-tag">Python</span><span class="skill-tag">Django</span>
+            <span class="skill-tag">React.js</span><span class="skill-tag">JavaScript</span>
+            <span class="skill-tag">REST / GraphQL APIs</span>
+            <span class="skill-tag">SQL</span><span class="skill-tag">Microservices</span>
+            <span class="skill-tag">AWS EC2 · S3 · Lambda · RDS</span>
+            <span class="skill-tag">DynamoDB · API Gateway · VPC</span>
+            <span class="skill-tag">CrewAI</span><span class="skill-tag">LLM Workflows</span>
+            <span class="skill-tag">Agentic Systems</span><span class="skill-tag">Prompt Engineering</span>
+            <span class="skill-tag">WCAG / GIGW</span><span class="skill-tag">SOC2</span>
+            <span class="skill-tag">Agile / Scrum</span><span class="skill-tag">HLD / LLD</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="container">
+    <div class="section-label"># experience</div>
+    <div class="section-title">Career Timeline</div>
+    <div class="section-divider"></div>
+    <div class="timeline">
+
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="tl-role">Technical Product Manager</div>
+          <div class="tl-company">Kuvaka Tech — Indore, India (Onsite)</div>
+          <div class="tl-meta">Oct 2025 → Jun 2026</div>
+          <ul>
+            <li>Spearheaded end-to-end product delivery for EU/US SaaS platforms — defined roadmaps, allocated resources, and executed sprints across engineering, design, and QA teams to achieve product-market alignment.</li>
+            <li>Drove technical architecture decisions; authored HLD/LLD documentation, API contracts, and service integration strategies to ensure system scalability and reliability.</li>
+            <li>Owned comprehensive QA strategy: implemented A/B testing, automated testing, WCAG/GIGW compliance validation, and performance optimization across all feature releases.</li>
+          </ul>
+          <div class="tl-tools">
+            <span class="tool-badge">HLD / LLD</span><span class="tool-badge">API Contracts</span>
+            <span class="tool-badge">A/B Testing</span><span class="tool-badge">WCAG / GIGW</span>
+            <span class="tool-badge">Agile / Scrum</span><span class="tool-badge">SaaS</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="tl-role">Product Manager</div>
+          <div class="tl-company">StayRealtor — Bangalore, India (Hybrid)</div>
+          <div class="tl-meta">Jun 2025 → Sept 2025</div>
+          <ul>
+            <li>Owned complete product lifecycle: conducted market research, competitive analysis, and user research; developed roadmap and shipped MVP across Pan-American markets.</li>
+            <li>Managed cross-functional delivery: coordinated sprint planning, tracked sprint velocity, and maintained stakeholder alignment across engineering and design teams.</li>
+          </ul>
+          <div class="tl-tools">
+            <span class="tool-badge">Market Research</span><span class="tool-badge">Competitive Analysis</span>
+            <span class="tool-badge">MVP Delivery</span><span class="tool-badge">Sprint Velocity</span>
+            <span class="tool-badge">Roadmapping</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="tl-role">Associate Product Manager</div>
+          <div class="tl-company">Stealth Startup — Doha, Qatar (Remote)</div>
+          <div class="tl-meta">Nov 2024 → Mar 2025</div>
+          <ul>
+            <li>Led concept-to-MVP delivery for an AI-powered agentic systems platform; executed market research, competitive analysis, and customer feedback synthesis.</li>
+            <li>Designed and tested agentic system workflows; integrated LLM capabilities, automation flows, and multi-agent orchestration to enhance platform functionality.</li>
+          </ul>
+          <div class="tl-tools">
+            <span class="tool-badge">LLM Workflows</span><span class="tool-badge">CrewAI</span>
+            <span class="tool-badge">Multi-Agent Systems</span><span class="tool-badge">Prompt Engineering</span>
+            <span class="tool-badge">Agile / Scrum</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="tl-role">Associate Product Manager</div>
+          <div class="tl-company">CloudEagle.ai (YC Backed) — Palo Alto, CA (Remote)</div>
+          <div class="tl-meta">Apr 2024 → Aug 2024</div>
+          <ul>
+            <li>Gathered technical requirements from enterprise stakeholders; configured SaaS modules and designed system integration workflows for cloud cost management.</li>
+            <li>Performed comprehensive system integration testing and validation; ensured platform compliance with enterprise standards (SOC2, data security protocols).</li>
+          </ul>
+          <div class="tl-tools">
+            <span class="tool-badge">SaaS Integration</span><span class="tool-badge">SOC2</span>
+            <span class="tool-badge">System Testing</span><span class="tool-badge">Cloud Cost Mgmt</span>
+            <span class="tool-badge">Enterprise B2B</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item" style="margin-bottom:0">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="tl-role">Software Developer Intern</div>
+          <div class="tl-company">Raja Ramanna Centre for Advanced Technology, DAE, GOI — Indore, India</div>
+          <div class="tl-meta">Jan 2024 → May 2024</div>
+          <ul>
+            <li>Engineered real-time dashboards and monitoring tools for the Indus-2 accelerator; visualized complex scientific data to enable high-throughput system evaluation.</li>
+            <li>Developed interactive analytics using Django and Plotly; built performant data pipelines to handle streaming sensor data and accelerator metrics.</li>
+          </ul>
+          <div class="tl-tools">
+            <span class="tool-badge">Django</span><span class="tool-badge">Python</span>
+            <span class="tool-badge">Plotly</span><span class="tool-badge">Data Pipelines</span>
+            <span class="tool-badge">Real-time Dashboards</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section id="certifications">
+  <div class="container">
+    <div class="section-label"># certifications</div>
+    <div class="section-title">Credentials</div>
+    <div class="section-divider"></div>
+    <div class="row g-4">
+
+      <div class="col-sm-6 col-lg-4">
+        <div class="cert-card">
+          <div class="cert-issuer">Duke University</div>
+          <div class="cert-name">Data-Driven Decision-Making for Agile Organizations — Specialization</div>
+          <div class="cert-links">
+            <a href="https://drive.google.com/file/d/1Vp-BFNkCivhIaRnsom1cXUG_PtbemhHr/view" target="_blank" class="cert-link"><i class="bi bi-eye"></i> View</a>
+            <a href="https://www.coursera.org/account/accomplishments/specialization/FU1Z3U70FEWJ" target="_blank" class="cert-link"><i class="bi bi-patch-check"></i> Verify</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-lg-4">
+        <div class="cert-card">
+          <div class="cert-issuer">Duke University</div>
+          <div class="cert-name">Agile Dashboards for Data-Driven Decision-Making</div>
+          <div class="cert-links">
+            <a href="https://drive.google.com/file/d/1L7MlomeKbTqrDaHc9FNjx32e9uyFrtgP/view" target="_blank" class="cert-link"><i class="bi bi-eye"></i> View</a>
+            <a href="https://www.coursera.org/account/accomplishments/verify/910KLH46LRM2" target="_blank" class="cert-link"><i class="bi bi-patch-check"></i> Verify</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-lg-4">
+        <div class="cert-card">
+          <div class="cert-issuer">Duke University</div>
+          <div class="cert-name">Agile Decision-Making Frameworks</div>
+          <div class="cert-links">
+            <a href="https://drive.google.com/file/d/1i1dQSk38tXIJrbkl52q3B8MsnExmqt2e/view" target="_blank" class="cert-link"><i class="bi bi-eye"></i> View</a>
+            <a href="https://www.coursera.org/account/accomplishments/verify/YEOHDL0MUCMA" target="_blank" class="cert-link"><i class="bi bi-patch-check"></i> Verify</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-lg-4">
+        <div class="cert-card">
+          <div class="cert-issuer">Duke University</div>
+          <div class="cert-name">Data Science for Agile Decision-Making</div>
+          <div class="cert-links">
+            <a href="https://drive.google.com/file/d/1HgCvwQYISGBvb5IYGoE4K1EIkZMi7nH7/view" target="_blank" class="cert-link"><i class="bi bi-eye"></i> View</a>
+            <a href="https://www.coursera.org/account/accomplishments/verify/9FPZC9KIGJLY" target="_blank" class="cert-link"><i class="bi bi-patch-check"></i> Verify</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-lg-4">
+        <div class="cert-card">
+          <div class="cert-issuer">Pendo.io</div>
+          <div class="cert-name">Product Management Basics</div>
+          <div class="cert-links">
+            <a href="https://drive.google.com/file/d/1iMvy9MllUOzV_esosgOYhHl6A266eOZN/view" target="_blank" class="cert-link"><i class="bi bi-eye"></i> View</a>
+            <a href="https://www.credly.com/badges/eacc0b21-26ee-4ebf-a29f-2716752c4558/public_url" target="_blank" class="cert-link"><i class="bi bi-patch-check"></i> Verify</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-lg-4">
+        <div class="cert-card">
+          <div class="cert-issuer">McKinsey</div>
+          <div class="cert-name">McKinsey Forward Program</div>
+          <div class="cert-links">
+            <a href="https://drive.google.com/file/d/1XFOQ1z1ss3N5zoBxN4pMLzVqbBw2XeRd/view" target="_blank" class="cert-link"><i class="bi bi-eye"></i> View</a>
+            <a href="https://www.credly.com/badges/cf7b301d-6801-48a4-a4ce-38d33262eaf3/public_url" target="_blank" class="cert-link"><i class="bi bi-patch-check"></i> Verify</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-lg-4">
+        <div class="cert-card">
+          <div class="cert-issuer">Google</div>
+          <div class="cert-name">Build Wireframes and Low-Fidelity Prototypes</div>
+          <div class="cert-links">
+            <a href="https://drive.google.com/file/d/1lTQWz-rQxObIH2L513UkBH1zWOHocxo1/view" target="_blank" class="cert-link"><i class="bi bi-eye"></i> View</a>
+            <a href="https://www.coursera.org/account/accomplishments/verify/AMTU6CELFU0E" target="_blank" class="cert-link"><i class="bi bi-patch-check"></i> Verify</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-lg-4">
+        <div class="cert-card">
+          <div class="cert-issuer">Meta</div>
+          <div class="cert-name">Introduction to Back-End Development</div>
+          <div class="cert-links">
+            <a href="https://drive.google.com/file/d/1Gam1luSKO-Ra8ahIqeCfixbrHOEuJtoo/view" target="_blank" class="cert-link"><i class="bi bi-eye"></i> View</a>
+            <a href="https://www.coursera.org/account/accomplishments/verify/9MBVWFWSPQO3" target="_blank" class="cert-link"><i class="bi bi-patch-check"></i> Verify</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-lg-4">
+        <div class="cert-card">
+          <div class="cert-issuer">Red Hat</div>
+          <div class="cert-name">Red Hat System Administration I (RH124) &amp; II (RH134)</div>
+          <div class="cert-links">
+            <a href="https://drive.google.com/drive/folders/1Gk4DEmlNtI2qRHfqiAZladcszgKbj24H" target="_blank" class="cert-link"><i class="bi bi-eye"></i> View</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="container">
+    <div class="section-label"># education</div>
+    <div class="section-title">Academic Background</div>
+    <div class="section-divider"></div>
+    <div class="row">
+      <div class="col-lg-8">
+        <div class="edu-card">
+          <div class="edu-degree">B.Tech — Information Technology</div>
+          <div class="edu-inst">Manipal University Jaipur</div>
+          <div class="edu-meta">Jaipur, Rajasthan, India &nbsp;·&nbsp; 2020 – 2024 &nbsp;·&nbsp; GPA: 8.11 / 10</div>
+          <div style="margin-top: 16px; display: flex; flex-wrap: wrap; gap: 8px;">
+            <span class="tool-badge">Data Structures</span>
+            <span class="tool-badge">DBMS</span>
+            <span class="tool-badge">Operating Systems</span>
+            <span class="tool-badge">Software Engineering</span>
+            <span class="tool-badge">Computer Networks</span>
+            <span class="tool-badge">Cloud Computing</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 d-flex align-items-center mt-4 mt-lg-0">
+        <div class="about-card w-100">
+          <h4><i class="bi bi-trophy me-2"></i>Extracurricular</h4>
+          <p>Led the Sponsorship team as Executive Committee member for <strong>Techideate</strong> — Manipal University Jaipur's annual technical festival — securing sponsorships across major and minor events.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="section-label"># contact</div>
+    <div class="section-title">Let's Talk</div>
+    <div class="section-divider"></div>
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="contact-card">
+          <div class="contact-tagline">Technical PM · Open to the next challenge.</div>
+          <p class="text-center" style="color: var(--muted); max-width: 440px; margin: 0 auto;">
+            Whether it's a senior TPM role, architecture-heavy product work, or a conversation about AI-driven platforms — my inbox is open.
+          </p>
+          <div class="contact-items">
+            <a href="mailto:unite.sukrit@gmail.com" class="contact-btn">
+              <i class="bi bi-envelope-fill"></i> unite.sukrit@gmail.com
+            </a>
+            <a href="https://www.linkedin.com/in/sukrit-srivastava-a6379014a/" target="_blank" class="contact-btn">
+              <i class="bi bi-linkedin"></i> LinkedIn
+            </a>
+            <a href="https://github.com/mactoeez" target="_blank" class="contact-btn">
+              <i class="bi bi-github"></i> GitHub
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span>❯</span> built by Sukrit Srivastava &nbsp;·&nbsp; 2025 &nbsp;·&nbsp; Indore, India
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // Hamburger nav
+  document.getElementById('hamburger').addEventListener('click', () => {
+    document.getElementById('navLinks').classList.toggle('open');
+  });
+  // Close nav on link click (mobile)
+  document.querySelectorAll('.nav-links a').forEach(a =>
+    a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open'))
+  );
+  // Smooth active link highlighting
+  const sections = document.querySelectorAll('section[id]');
+  const navAs = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 80) current = s.id;
+    });
+    navAs.forEach(a => {
+      a.style.color = a.getAttribute('href') === '#' + current ? 'var(--blue)' : '';
+    });
+  });
+</script>
+</body>
+</html>
